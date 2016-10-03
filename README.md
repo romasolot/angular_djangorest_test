@@ -20,5 +20,7 @@ docker-compose up client
 
 
 Frontend - http://localhost:9000/
+
 Admin area - http://localhost:8000/admin/
+
 API - http://localhost:8000/
