@@ -1,0 +1,39 @@
+version: '2'
+services:
+  db:
+    image: mysql:latest
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: restauth
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+    ports:
+      - "3306:3306"
+    restart: always
+  web:
+      container_name: web
+      build: .
+      command: python3 RestServer/manage.py runserver 0.0.0.0:8000
+      volumes:
+        - .:/code
+      ports:
+        - "8000:8000"
+      depends_on:
+        - db
+      links:
+        - db
+#      onrun:
+#        - rabbitmqctl add_user user password
+  client:
+      build: .
+      command: npm start
+      volumes:
+        - .:/code
+      ports:
+        - "9000:9000"
+      depends_on:
+        - db
+      links:
+        - db

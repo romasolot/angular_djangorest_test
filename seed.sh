@@ -1,0 +1,1 @@
+mysql -h db -P 3306 --protocol=TCP -u root -proot restauth < ./seed.sql

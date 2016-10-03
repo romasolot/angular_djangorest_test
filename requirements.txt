@@ -1,0 +1,11 @@
+Django==1.9.6
+djangorestframework
+python-social-auth
+var_dump
+oauth2client
+google-api-python-client
+oauth2_provider
+mysqlclient
+django-cors-headers
+pygments
+django-oauth-toolkit
