@@ -8,7 +8,7 @@ docker-compose build web
 
 docker-compose up db
 
-docker-compose run web /usr/local/bin/python manage.py migrate
+docker-compose run web python3 RestServer/manage.py migrate
 
 docker-compose run web python3 RestServer/manage.py createsuperuser
 
