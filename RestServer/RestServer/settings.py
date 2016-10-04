@@ -20,6 +20,7 @@ INSTALLED_APPS = (
     'snippets',
     'social.apps.django_app.default',
     'oauth2_provider',
+    'users',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -134,4 +135,9 @@ CORS_ALLOW_HEADERS = (
     'x-csrftoken',
     'user-agent',
     'accept-encoding',
+)
+
+ADMINS = (
+    # ('Your Name', 'your_email@domain.com'),
+    ('admin', 'admin@mysite.com'),
 )
