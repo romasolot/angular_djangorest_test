@@ -21,8 +21,8 @@ RUN npm install -g http-server bower
 ADD bower.json /code/
 ADD .bowerrc /code/
 
-ADD wait.sh /code/
-RUN chmod +x wait.sh
+ADD runserver.sh /code/
+RUN chmod +x runserver.sh
 
 #RUN python3 manage.py makemigrations
 #RUN python3 manage.py makemigrations RestServer
