@@ -1,3 +1,4 @@
+import os
 import json
 from oauth2_provider.settings import oauth2_settings
 from oauthlib.common import generate_token
@@ -7,7 +8,7 @@ from django.utils.timezone import now, timedelta
 import httplib2
 from apiclient import discovery
 from oauth2client.client import AccessTokenCredentials
-
+from django.conf import settings
 
 def get_token_json(access_token, user):
     token = {
@@ -23,7 +24,7 @@ def get_token_json(access_token, user):
 
 
 def get_access_token(user):
-    app = Application.objects.get(name="Server")
+    app = Application.objects.get(name=settings.APP_NAME)
 
     try:
         old_access_token = AccessToken.objects.get(
@@ -64,23 +65,29 @@ def get_access_token(user):
 
     return get_token_json(access_token, user)
 
-def get_mails(user):
+
+def get_mails(request):
     credentials = AccessTokenCredentials(
-        user.social_auth.get(provider="google-plus").extra_data.get('access_token'),
+        request.user.social_auth.get(provider="google-plus").extra_data.get('access_token'),
         'Testp/1.0')
     service = discovery.build(
         'gmail',
         'v1',
         http=credentials.authorize(httplib2.Http()))
-    results = service.users().messages().list(
+    nextPageToken = request.GET.get('nextPageToken')
+    perpage = settings.EMAILS_PER_PAGE
+    response = service.users().messages().list(
         userId='me',
-        maxResults=5
+        maxResults=perpage,
+        pageToken=nextPageToken
     ).execute()
 
     inbox = []
-
-    if 'messages' in results:
-        for message in results['messages']:
+    result = {}
+    if 'nextPageToken' in response:
+        result['nextPageToken'] = response['nextPageToken']
+    if 'messages' in response:
+        for message in response['messages']:
             _message = service.users().messages().get(
                 userId='me',
                 id=message.get('id'),
@@ -104,5 +111,5 @@ def get_mails(user):
                 # mail['date'] = ('', head.get('value'))[head.get('name') == 'Date']
 
             inbox.append(mail)
-
-    return json.dumps(inbox)
+    result['emails'] = inbox
+    return json.dumps(result)

@@ -2,9 +2,9 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = '6#x^j=l^nyddiv^=#bh0spvivj8so)#t9p@q(jbw@=)2a-&2l1'
+SECRET_KEY = os.environ['SECRET_KEY']
 
-DEBUG = True
+DEBUG = True if os.getenv('DEBUG') == 'true' else False
 
 ALLOWED_HOSTS = []
 
@@ -61,11 +61,11 @@ WSGI_APPLICATION = 'RestServer.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'restauth',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'db',
-        'PORT': '3306',
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.environ['DB_USER'],
+        'PASSWORD': os.environ['DB_PASS'],
+        'HOST': os.environ['DB_SERVICE'],
+        'PORT': os.environ['DB_PORT'],
     }
 }
 
@@ -108,9 +108,15 @@ OAUTH2_PROVIDER = {
 
 # SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1065700267506-hketl2csh59v8vgopei7n7c4kk6vdgtt.apps.googleusercontent.com'
 # SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'AIzaSyByHFLWYoIbFRl2NUAV9wIogZHQGeYbOP4'
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1065700267506-hketl2csh59v8vgopei7n7c4kk6vdgtt.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'rd-7Lvs7-wP3uu8W5e8KJdGI'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET']
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+APP_NAME = os.getenv('APP_NAME')
+EMAILS_PER_PAGE = os.getenv('EMAILS_PER_PAGE')
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
+    'access_type': 'offline',
+    'approval_prompt': 'auto'
+}
 
 CORS_ORIGIN_WHITELIST = (
     'localhost:9000',

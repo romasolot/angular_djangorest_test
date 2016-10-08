@@ -36,4 +36,4 @@ def register_by_access_token(request, backend):
 @authentication_classes([OAuth2Authentication])
 @permission_classes([permissions.IsAuthenticated])
 def emails(request):
-    return HttpResponse(get_mails(request.user), content_type="application/json")
+    return HttpResponse(get_mails(request), content_type="application/json")

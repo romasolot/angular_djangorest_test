@@ -6,11 +6,14 @@ services:
     environment:
       MYSQL_DATABASE: restauth
       MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3310:3306"
   web:
       container_name: web
       image: app
       build: .
       command: sh runserver.sh
+      env_file: .env
       volumes:
         - .:/code
       ports:
